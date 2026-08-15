@@ -87,7 +87,7 @@
              ("cc" . "src C")
              ("cpp" . "src C++")
              ("sv" . "src systemverilog")
-             ("v" . "src verilog")))
+             ("ver" . "src verilog")))
     (add-to-list 'org-structure-template-alist template))
   (dolist (mapping
            '(("systemverilog" . verilog)
