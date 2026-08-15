@@ -6,7 +6,7 @@ The configuration is the default Emacs setup. The previous Spacemacs checkout is
 
 ## Status
 
-Migration phases 0, 1, and the default-startup cutover are complete. Phase 2 source-control tooling is installed; live GitHub synchronization requires a repository remote and credentials.
+Migration phases 0, 1, 2, and the default-startup cutover are complete.
 
 - Isolated configuration repository and generated state
 - Core editing and file-management defaults
@@ -22,6 +22,8 @@ Migration phases 0, 1, and the default-startup cutover are complete. Phase 2 sou
 - Encrypted credentials through `~/.authinfo.gpg`
 
 See [`PLAN.md`](PLAN.md) for the remaining migration plan.
+
+Repository: <https://github.com/AkashGanesan/pika-emacs>
 
 ## Requirements
 

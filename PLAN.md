@@ -160,19 +160,21 @@ Implemented:
 
 Acceptance gate: isolated daemon startup, completion activation, project recognition, and keymap behavior. Passed.
 
-### Phase 2 — Git and GitHub — Implemented; remote acceptance pending
+### Phase 2 — Git and GitHub — Complete
 
-Implemented Magit, Forge, generated-state isolation, encrypted GitHub
-authentication through `~/.authinfo.gpg`, and the `C-c g` source-control map.
-Magit status has been exercised against this repository.
+Implemented and verified:
 
-Remaining external setup:
+- Magit status and source-control commands
+- Forge tracking and API synchronization for `AkashGanesan/pika-emacs`
+- Public GitHub remote at `https://github.com/AkashGanesan/pika-emacs`
+- Encrypted token storage in `~/.authinfo.gpg`
+- Passphrase-protected local GPG identity
+- Secure `omp-github` launcher for the GitHub plugin
+- Generated Forge and Transient state under ignored `var/` paths
+- The `C-c g` Git and GitHub command map
 
-1. Add a GitHub remote to a repository.
-2. Add a GitHub token to `~/.authinfo.gpg`.
-3. Optionally install the currently unavailable `gh` CLI.
-4. Create a branch, stage, commit, and push a change through Magit.
-5. Fetch and inspect GitHub issues or pull requests through Forge.
+The optional `gh` CLI is not installed; Magit, Forge, and the GitHub plugin cover
+the current workflow.
 
 ### Phase 3 — Org foundation and Zettelkasten — Planned
 
