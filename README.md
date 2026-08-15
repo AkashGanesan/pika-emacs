@@ -17,6 +17,7 @@ Migration phases 0, 1, 2, 3, and the default-startup cutover are complete.
 - Which-Key and personal prefix maps
 - Markdown and GitHub-flavored Markdown editing
 - Built-in Modus Vivendi dark theme
+- Maximized GUI frames at startup
 - Magit for Git workflows
 - Forge for GitHub issues and pull requests
 - Encrypted credentials through `~/.authinfo.gpg`
@@ -67,36 +68,36 @@ Future language, hardware, and remaining long-form writing support will be added
 
 ## Main bindings
 
-| Binding | Action |
-|---|---|
-| `C-s` | Search the current buffer with Consult |
-| `C-x b` | Switch buffers with Consult |
-| `C-.` | Act on the current completion candidate with Embark |
-| `M-/` | Complete from buffer text with Cape |
-| `C-c f` | Complete a file name with Cape |
-| `C-c p f` | Find a file in the current project |
-| `C-c p b` | Switch project buffers |
-| `C-c p s` | Search the current project with ripgrep |
-| `C-c p c` | Compile the current project |
-| `C-c c c` | Run `compile` |
-| `C-c c r` | Run `recompile` |
-| `C-c d g` | Start GDB |
-| `C-c g s` | Open Magit status |
-| `C-c g d` | Open the Magit dispatch |
-| `C-c g f` | Open the Magit file dispatch |
-| `C-c g l` | Show the current branch log |
-| `C-c g h` | Open the Forge dispatch |
-| `C-c a a` | Open the Org agenda |
-| `C-c a c` | Capture a task, note, project, or someday item |
-| `C-c a b e` | Execute the Org source block at point |
-| `C-c a b s` | Edit the Org source block at point |
-| `C-c a b t` | Tangle source blocks |
-| `C-c n f` | Find or create an Org-roam note |
-| `C-c n i` | Insert an Org-roam link |
-| `C-c n b` | Toggle the Org-roam backlinks buffer |
-| `C-c n c` | Open Org-roam capture |
-| `C-c n o` | Open a bibliography item with Citar |
-| `C-c n x` | Insert an Org citation |
+| Binding     | Action                                              |
+|-------------|-----------------------------------------------------|
+| `C-s`       | Search the current buffer with Consult              |
+| `C-x b`     | Switch buffers with Consult                         |
+| `C-.`       | Act on the current completion candidate with Embark |
+| `M-/`       | Complete from buffer text with Cape                 |
+| `C-c f`     | Complete a file name with Cape                      |
+| `C-c p f`   | Find a file in the current project                  |
+| `C-c p b`   | Switch project buffers                              |
+| `C-c p s`   | Search the current project with ripgrep             |
+| `C-c p c`   | Compile the current project                         |
+| `C-c c c`   | Run `compile`                                       |
+| `C-c c r`   | Run `recompile`                                     |
+| `C-c d g`   | Start GDB                                           |
+| `C-c g s`   | Open Magit status                                   |
+| `C-c g d`   | Open the Magit dispatch                             |
+| `C-c g f`   | Open the Magit file dispatch                        |
+| `C-c g l`   | Show the current branch log                         |
+| `C-c g h`   | Open the Forge dispatch                             |
+| `C-c a a`   | Open the Org agenda                                 |
+| `C-c a c`   | Capture a task, note, project, or someday item      |
+| `C-c a b e` | Execute the Org source block at point               |
+| `C-c a b s` | Edit the Org source block at point                  |
+| `C-c a b t` | Tangle source blocks                                |
+| `C-c n f`   | Find or create an Org-roam note                     |
+| `C-c n i`   | Insert an Org-roam link                             |
+| `C-c n b`   | Toggle the Org-roam backlinks buffer                |
+| `C-c n c`   | Open Org-roam capture                               |
+| `C-c n o`   | Open a bibliography item with Citar                 |
+| `C-c n x`   | Insert an Org citation                              |
 
 Press a prefix and pause to display its Which-Key help.
 
