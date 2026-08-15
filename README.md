@@ -6,7 +6,7 @@ The configuration is the default Emacs setup. The previous Spacemacs checkout is
 
 ## Status
 
-Migration phases 0, 1, 2, and the default-startup cutover are complete.
+Migration phases 0, 1, 2, 3, and the default-startup cutover are complete.
 
 - Isolated configuration repository and generated state
 - Core editing and file-management defaults
@@ -20,6 +20,10 @@ Migration phases 0, 1, 2, and the default-startup cutover are complete.
 - Magit for Git workflows
 - Forge for GitHub issues and pull requests
 - Encrypted credentials through `~/.authinfo.gpg`
+- Org agenda and capture workflow
+- Org-roam Zettelkasten with backlinks
+- Org Cite and Citar bibliography
+- Org Babel execution and tangling for Emacs Lisp, Python, shell, C, and C++
 
 See [`PLAN.md`](PLAN.md) for the remaining migration plan.
 
@@ -32,6 +36,7 @@ Repository: <https://github.com/AkashGanesan/pika-emacs>
 - GnuPG is required for encrypted GitHub credentials.
 - Internet access is required on the first launch to install ELPA packages.
 - The `gh` CLI is optional and is not currently installed.
+- Python 3 and C/C++ compilers are required to execute the configured Org Babel languages.
 
 ## Run
 
@@ -51,13 +56,14 @@ init.el                    package bootstrap and module loading
 lisp/pika-core.el          editing, persistence, and project defaults
 lisp/pika-completion.el    minibuffer and in-buffer completion
 lisp/pika-development.el  Magit, Forge, credentials, and development tools
+lisp/pika-org.el          agenda, Zettelkasten, citations, and code blocks
 lisp/pika-bindings.el      personal prefix keymaps
 lisp/pika-writing.el      Markdown and prose-editing support
 PLAN.md                    phased migration plan
 AGENTS.md                  repository maintenance rules
 ```
 
-Future language, hardware, Org, and writing support will be added as focused modules rather than expanding `init.el`.
+Future language, hardware, and remaining long-form writing support will be added as focused modules rather than expanding `init.el`.
 
 ## Main bindings
 
@@ -80,8 +86,52 @@ Future language, hardware, Org, and writing support will be added as focused mod
 | `C-c g f` | Open the Magit file dispatch |
 | `C-c g l` | Show the current branch log |
 | `C-c g h` | Open the Forge dispatch |
+| `C-c a a` | Open the Org agenda |
+| `C-c a c` | Capture a task, note, project, or someday item |
+| `C-c a b e` | Execute the Org source block at point |
+| `C-c a b s` | Edit the Org source block at point |
+| `C-c a b t` | Tangle source blocks |
+| `C-c n f` | Find or create an Org-roam note |
+| `C-c n i` | Insert an Org-roam link |
+| `C-c n b` | Toggle the Org-roam backlinks buffer |
+| `C-c n c` | Open Org-roam capture |
+| `C-c n o` | Open a bibliography item with Citar |
+| `C-c n x` | Insert an Org citation |
 
 Press a prefix and pause to display its Which-Key help.
+
+## Org workspace
+
+Personal Org data lives outside the configuration repository:
+
+```text
+~/org/
+├── agenda/               inbox, projects, and someday lists
+├── roam/                 linked permanent notes
+│   ├── concepts/
+│   ├── experiments/
+│   ├── fiction/
+│   ├── hardware/
+│   ├── projects/
+│   ├── references/
+│   └── rl/
+├── bibliography/         BibTeX metadata and attached files
+└── manuscript/           chapters and exports
+```
+
+Capture fleeting material with `C-c a c`, then promote durable ideas with
+`C-c n f`. Org-roam templates cover concepts, literature, hardware, RL,
+fiction, projects, and experiments. The knowledge base begins with linked
+Markov decision process and reinforcement-learning notes.
+
+The bibliography at `~/org/bibliography/references.bib` starts with Sutton and
+Barto's *Reinforcement Learning: An Introduction*. Citar drives Org Cite
+selection and attached-file lookup.
+
+Org Babel keeps evaluation explicit: Emacs asks before executing code. Enabled
+languages are Emacs Lisp, Python, shell, C, and C++. Verilog and SystemVerilog
+blocks can be edited and tangled but are not executed. Use `C-c a b` for source
+block navigation, editing, execution, result removal, and tangling.
 
 ## GitHub authentication
 

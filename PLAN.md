@@ -176,25 +176,28 @@ Implemented and verified:
 The optional `gh` CLI is not installed; Magit, Forge, and the GitHub plugin cover
 the current workflow.
 
-### Phase 3 — Org foundation and Zettelkasten — Planned
+### Phase 3 — Org foundation and Zettelkasten — Complete
 
-Implement agenda files, capture templates, Org-roam, Org Cite, Citar, and the knowledge layout above. Begin without visual-decoration packages.
+Implemented and verified:
 
-Capture flow:
+- Agenda files for inbox, projects, and someday items
+- Capture templates for tasks, fleeting notes, projects, and deferred ideas
+- Org-roam autosync with its SQLite database under ignored `var/` state
+- Permanent-note templates for concepts, literature, hardware, RL, fiction,
+  projects, and experiments
+- Org Cite with Citar and a BibTeX library
+- Attached-reference storage outside the configuration repository
+- Backlink discovery and completion throughout Org buffers
+- Org Babel editing, explicit execution, result management, and tangling
+- Executable Emacs Lisp, Python, shell, C, and C++ blocks
+- Editable and tangleable Verilog and SystemVerilog blocks
+- `C-c a` agenda and Babel commands and `C-c n` knowledge commands
 
-1. Capture quickly into the inbox.
-2. Triage into deletion, an agenda action, a literature note, or a concept note.
-3. Link durable concepts to existing notes where a real relationship exists.
-4. Connect concepts to hardware, RL, or fiction projects.
-5. Record results and decisions back into durable notes.
-
-Acceptance gate:
-
-1. Capture an inbox note without changing buffers.
-2. Create and link a concept note.
-3. View backlinks.
-4. Insert a citation from BibTeX.
-5. Promote a note into a project action or manuscript section.
+Behavioral verification captured an inbox task, rendered it in the agenda,
+created linked Markov decision process and reinforcement-learning notes,
+observed the backlink, inserted the Sutton and Barto citation, executed Python
+through Org Babel, and tangled the source to a standalone file. Temporary
+capture and code-smoke artifacts were removed afterward.
 
 ### Phase 4 — Python and RL — Planned
 
