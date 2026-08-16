@@ -199,7 +199,7 @@ observed the backlink, inserted the Sutton and Barto citation, executed Python
 through Org Babel, and tangled the source to a standalone file. Temporary
 capture and code-smoke artifacts were removed afterward.
 
-### Phase 4 — Python and RL — Planned
+### Phase 4 — Python and RL — Complete
 
 External prerequisites:
 
@@ -207,74 +207,102 @@ External prerequisites:
 - Basedpyright
 - Ruff
 
-Implement Python mode, `lsp-mode`, `lsp-pyright`, Corfu completion, Flycheck diagnostics, Ruff commands, test compilation, and project-local environment discovery. Prefer Python modules and Org Babel over notebook integration initially.
+Implemented and verified:
 
-Each experiment note should record its paper or concept link, Git commit, command/configuration, seed, artifacts, result, and interpretation.
+- Python mode with `lsp-mode` and `lsp-pyright`
+- Basedpyright completion, definitions, references, rename, workspace symbols,
+  and type diagnostics
+- Corfu completion through LSP's completion-at-point function
+- Flycheck diagnostics with Ruff linting after LSP diagnostics
+- Project-local `.venv` discovery for Python shells and subprocesses
+- Explicit `uv sync` dependency synchronization with environment refresh
+- Ruff buffer and region formatting
+- `uv run pytest` through compilation mode
+- File-watcher exclusions for environments, build trees, datasets,
+  checkpoints, simulator output, and waveforms
+- Restrained `lsp-ui` presentation with documentation popups and sidelines off
+- The `C-c y` Python command map
 
-Acceptance gate:
+Behavioral verification used a real temporary `uv` project. Basedpyright
+provided completion, definition and reference locations, a cross-file rename,
+workspace symbols, and a deliberate type error through Flycheck. Ruff
+formatted the buffer, synchronized a declared dependency into the project
+`.venv`, imported it through the environment selected by Emacs, and ran
+`uv run pytest` with linked compilation output and one passing test.
 
-1. `lsp-mode` starts Basedpyright in a real `uv` project.
-2. Completion, definition, references, rename, and workspace symbols work.
-3. Flycheck reports a deliberate type error.
-4. Ruff formats the buffer.
-5. `uv run pytest` executes through `compile` with linked tracebacks.
+Experiment notes record their paper or concept link, Git commit,
+command/configuration, seed, artifacts, result, and interpretation.
 
-### Phase 5 — C++, CUDA, RTL, and DV — Planned
+### Phase 5 — C++, CUDA, RTL, and DV — Complete
 
-Implement in this order:
+External prerequisites:
 
-1. C++ with Clangd and CMake-generated `compile_commands.json`.
-2. CUDA with toolkit headers, NVCC, Clangd, and `cuda-gdb`.
-3. Verilog/SystemVerilog editing, Verilator, and Verible.
-4. Project-local commercial simulator commands where applicable.
-5. `verilog-ext` after simpler commands are proven.
+- Clangd and CMake
+- CUDA toolkit, NVCC, and `cuda-gdb`
+- Verible and Verilator
+- A project-selected simulator and waveform viewer
 
-Hardware projects should expose boring commands such as:
+Implemented and verified:
 
-```text
-make lint
-make compile
-make test TEST=<name> SEED=<seed>
-make regress
-make waves TEST=<name>
-```
+1. C++ and CUDA navigation use Clangd with real CMake-generated
+   `compile_commands.json` databases.
+2. C++ and CUDA debug builds run through project-local CMake targets; GDB and
+   `cuda-gdb` start against the resulting executables.
+3. Verilog and SystemVerilog buffers use Verible for LSP navigation across
+   packages, interfaces, modules, and classes, plus Verible buffer formatting.
+4. Hardware commands run simulator-independent project targets through
+   compilation mode:
 
-Emacs invokes these through `compile`; it does not duplicate simulator file lists or flags.
+   ```text
+   make lint
+   make compile
+   make test TEST=<name> SEED=<seed>
+   make regress
+   make waves TEST=<name>
+   ```
 
-Acceptance gate:
+5. Commercial simulator selection, file lists, flags, libraries, licenses, and
+   environment setup remain in project Makefiles. The Emacs commands require no
+   simulator-specific branch.
+6. `verilog-ext` was evaluated but not added: its LSP, formatting, linting,
+   compilation, and navigation features currently duplicate the verified
+   smaller configuration.
 
-- C++ and CUDA navigation use real compilation databases.
-- Build and lint diagnostics link to source.
-- GDB and `cuda-gdb` start against debug targets.
-- SystemVerilog navigation works across representative packages, interfaces, modules, and classes.
-- One named and seeded simulation runs from Emacs.
-- Generated waveforms open successfully.
+Behavioral verification used temporary C++, CUDA, and SystemVerilog projects.
+Clangd resolved definitions and references from real compilation databases;
+CMake debug builds completed; GDB and `cuda-gdb` launched; compiler diagnostics
+navigated to source; Verible resolved cross-file package, interface, module, and
+class symbols and formatted a buffer. A named simulation ran with seed 42,
+three regression seeds passed, and Surfer loaded the generated VCD in headless
+server mode.
 
-### Phase 6 — Fiction workflow — Planned
+### Phase 6 — Fiction workflow — Complete
 
-Use Org files for manuscript structure and Org-roam for worldbuilding and research. Do not fragment manuscript prose into atomic notes.
+Manuscript prose remains in ordered Org files under `~/org/manuscript/`;
+characters, settings, worldbuilding, and research remain linked Org-roam notes
+under `~/org/roam/fiction/`.
 
-Markdown editing and the dark theme are already available. The structured fiction
-workflow, spell checking, focused prose presentation, and export remain planned.
+Implemented and verified:
 
-Suggested manuscript layout:
+1. Olivetti and variable-pitch presentation provide a reversible focused prose
+   view without changing manuscript text.
+2. Flyspell and explicit whole-buffer checking use Aspell in Org and Markdown
+   buffers.
+3. Scene and continuity captures preserve a link to the current chapter and
+   provide fields for character, setting, purpose, established facts, and
+   follow-up.
+4. Dedicated Org-roam templates create tagged character and setting notes;
+   normal Org-roam insertion links them from captures and chapters.
+5. `book.org` owns chapter order through Org `#+include:` directives. Export
+   expands those files into `exports/book.html`.
+6. The `C-c w` map opens the manuscript and outline, captures writing notes,
+   inserts fiction links, toggles focused presentation, checks spelling, and
+   exports the manuscript.
 
-```text
-manuscript/
-  book.org
-  outline.org
-  chapters/
-  exports/
-```
-
-Implement prose presentation, spell checking, scene and continuity capture templates, links to characters/settings, and multi-file export.
-
-Acceptance gate:
-
-1. Capture a scene idea while editing a chapter.
-2. Link it to character and setting notes.
-3. Run spell checking.
-4. Export a multi-file sample chapter with correct ordering and formatting.
+Behavioral verification used a temporary two-chapter manuscript. Emacs enabled
+and disabled focused presentation, completed an Aspell pass, captured a scene
+from the first chapter with character and setting links, and exported both
+chapters to HTML in the order declared by `book.org`.
 
 ### Phase 7 — Cutover — Complete
 

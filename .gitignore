@@ -2,3 +2,6 @@
 /eln-cache/
 /*.elc
 /.cache/
+/.#*
+/.lsp-session-v1
+/session.*

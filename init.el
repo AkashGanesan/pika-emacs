@@ -29,6 +29,7 @@
 (require 'pika-core)
 (require 'pika-completion)
 (require 'pika-development)
+(require 'pika-hardware)
 (require 'pika-org)
 (require 'pika-writing)
 (require 'pika-bindings)

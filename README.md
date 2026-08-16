@@ -6,7 +6,7 @@ The configuration is the default Emacs setup. The previous Spacemacs checkout is
 
 ## Status
 
-Migration phases 0, 1, 2, 3, and the default-startup cutover are complete.
+Migration phases 0 through 6 and the default-startup cutover are complete.
 
 - Isolated configuration repository and generated state
 - Core editing and file-management defaults
@@ -25,6 +25,13 @@ Migration phases 0, 1, 2, 3, and the default-startup cutover are complete.
 - Org-roam Zettelkasten with backlinks
 - Org Cite and Citar bibliography
 - Org Babel execution and tangling for Emacs Lisp, Python, shell, C, and C++
+- Python development with Basedpyright, Corfu, Flycheck, Ruff, and `uv`
+- Project-local Python environments and pytest through compilation mode
+- C++, CUDA, RTL, and simulation workflows with project-local build targets
+- Clangd navigation from CMake compilation databases
+- Verible formatting, Verilator linting, seeded simulation, and waveform viewing
+- Structured Org manuscripts, focused prose presentation, and Aspell checking
+- Scene and continuity capture, fiction links, and ordered multi-file HTML export
 
 See [`PLAN.md`](PLAN.md) for the remaining migration plan.
 
@@ -37,7 +44,12 @@ Repository: <https://github.com/AkashGanesan/pika-emacs>
 - GnuPG is required for encrypted GitHub credentials.
 - Internet access is required on the first launch to install ELPA packages.
 - The `gh` CLI is optional and is not currently installed.
-- Python 3 and C/C++ compilers are required to execute the configured Org Babel languages.
+- Python development requires `uv`, Basedpyright, and Ruff.
+- C and C++ development requires Clangd and a project-generated `compile_commands.json`.
+- CUDA development requires the CUDA toolkit, NVCC, and `cuda-gdb`.
+- RTL development requires Verible, Verilator, and a simulator; Icarus Verilog
+  and Surfer are the tested open-source simulation and waveform tools.
+- Fiction spell checking requires Aspell.
 
 ## Run
 
@@ -57,14 +69,16 @@ init.el                    package bootstrap and module loading
 lisp/pika-core.el          editing, persistence, and project defaults
 lisp/pika-completion.el    minibuffer and in-buffer completion
 lisp/pika-development.el  Magit, Forge, credentials, and development tools
+lisp/pika-hardware.el     C++, CUDA, RTL, simulation, and debugging workflows
 lisp/pika-org.el          agenda, Zettelkasten, citations, and code blocks
 lisp/pika-bindings.el      personal prefix keymaps
-lisp/pika-writing.el      Markdown and prose-editing support
+lisp/pika-writing.el      Markdown, focused prose, capture, and manuscript export
 PLAN.md                    phased migration plan
 AGENTS.md                  repository maintenance rules
 ```
 
-Future language, hardware, and remaining long-form writing support will be added as focused modules rather than expanding `init.el`.
+Workflow-specific configuration remains in focused modules rather than
+expanding `init.el`.
 
 ## Main bindings
 
@@ -82,6 +96,7 @@ Future language, hardware, and remaining long-form writing support will be added
 | `C-c c c`   | Run `compile`                                       |
 | `C-c c r`   | Run `recompile`                                     |
 | `C-c d g`   | Start GDB                                           |
+| `C-c d c`   | Start `cuda-gdb` against a CUDA executable              |
 | `C-c g s`   | Open Magit status                                   |
 | `C-c g d`   | Open the Magit dispatch                             |
 | `C-c g f`   | Open the Magit file dispatch                        |
@@ -98,6 +113,27 @@ Future language, hardware, and remaining long-form writing support will be added
 | `C-c n c`   | Open Org-roam capture                               |
 | `C-c n o`   | Open a bibliography item with Citar                 |
 | `C-c n x`   | Insert an Org citation                              |
+| `C-c y f`   | Format the current Python buffer with Ruff           |
+| `C-c y r`   | Rename the Python symbol at point with LSP           |
+| `C-c y s`   | Search workspace symbols with Consult LSP            |
+| `C-c y t`   | Run `uv run pytest` through compilation mode         |
+| `C-c y u`   | Synchronize project dependencies with `uv sync`       |
+| `C-c h c`   | Run the project-local `make compile` target              |
+| `C-c h f`   | Format the current Verilog/SystemVerilog buffer          |
+| `C-c h l`   | Run the project-local `make lint` target                 |
+| `C-c h r`   | Run the project-local `make regress` target              |
+| `C-c h t`   | Run a named, seeded project-local simulation             |
+| `C-c h w`   | Run the project-local waveform target                    |
+| `C-c w b`   | Open the manuscript master file                       |
+| `C-c w c`   | Capture a continuity note from the current location   |
+| `C-c w e`   | Export the ordered manuscript to HTML                 |
+| `C-c w f`   | Toggle focused prose presentation                     |
+| `C-c w l`   | Insert an Org-roam character or setting link          |
+| `C-c w o`   | Open the manuscript outline                           |
+| `C-c w p`   | Spell-check the current prose buffer                  |
+| `C-c w s`   | Capture a scene idea from the current location        |
+| `M-.`       | Find the definition of the symbol at point           |
+| `M-?`       | Find references to the symbol at point               |
 
 Press a prefix and pause to display its Which-Key help.
 
@@ -122,8 +158,7 @@ Personal Org data lives outside the configuration repository:
 
 Capture fleeting material with `C-c a c`, then promote durable ideas with
 `C-c n f`. Org-roam templates cover concepts, literature, hardware, RL,
-fiction, projects, and experiments. The knowledge base begins with linked
-Markov decision process and reinforcement-learning notes.
+characters, settings, general fiction, projects, and experiments.
 
 The bibliography at `~/org/bibliography/references.bib` starts with Sutton and
 Barto's *Reinforcement Learning: An Introduction*. Citar drives Org Cite
@@ -133,6 +168,82 @@ Org Babel keeps evaluation explicit: Emacs asks before executing code. Enabled
 languages are Emacs Lisp, Python, shell, C, and C++. Verilog and SystemVerilog
 blocks can be edited and tangled but are not executed. Use `C-c a b` for source
 block navigation, editing, execution, result removal, and tangling.
+
+## Fiction writing
+
+The manuscript remains long-form Org content under `~/org/manuscript/`;
+worldbuilding and research remain linked notes under `~/org/roam/fiction/`.
+The writing commands create this layout when first needed:
+
+```text
+manuscript/
+├── book.org
+├── outline.org
+├── chapters/
+└── exports/
+```
+
+`book.org` is the export master. Add chapter files with Org `#+include:`
+directives in publication order; `C-c w e` expands those includes into
+`exports/book.html`. `C-c w b` opens the master and `C-c w o` opens the outline.
+
+While editing a chapter, `C-c w s` captures a scene idea and `C-c w c` captures
+a continuity issue into the outline. Both preserve a link to the editing
+location and provide character and setting fields. Use `C-c w l` in those
+fields to insert links to Org-roam notes. Character and setting templates are
+available through `C-c n c`.
+
+Flyspell runs in Org and Markdown buffers using Aspell. `C-c w p` performs an
+explicit whole-buffer spelling pass. `C-c w f` toggles Olivetti's centered,
+variable-pitch presentation without changing the manuscript text.
+
+## Python development
+
+Python buffers start Basedpyright through `lsp-mode`. LSP completion is exposed
+through the completion-at-point API and displayed by Corfu; Flycheck receives
+Basedpyright diagnostics and then runs Ruff linting. Ruff's separate language
+server is disabled to avoid duplicate LSP diagnostics.
+
+In a `uv` project, use `C-c y u` to synchronize the dependencies declared in
+`pyproject.toml` into the project `.venv`. After a successful sync, Emacs adds
+`.venv/bin` to that Python buffer's executable path and process environment,
+selects `.venv/bin/python`, and restarts Basedpyright. Project-local Python
+tools and imported packages are then available to LSP, Flycheck, Ruff,
+compilation, and inferior Python without changing other projects' buffers.
+
+Use `C-c y f` to format with Ruff and `C-c y t` to run `uv run pytest` in
+compilation mode. Project configuration owns Python versions, dependencies,
+Basedpyright settings, and Ruff rules. Dependency installation remains
+explicit; opening a project never runs a networked or mutating sync.
+
+## Hardware development
+
+C, C++, and CUDA buffers start Clangd through `lsp-mode`. Projects own compiler
+flags and include paths through CMake-generated `compile_commands.json`; Emacs
+does not duplicate them. CUDA files use `cuda-mode`, and `C-c d c` launches
+`cuda-gdb` against a selected executable.
+
+Verilog and SystemVerilog buffers start the Verible language server. Use
+`C-c h f` for Verible formatting and the `C-c h` map for project workflows.
+Hardware projects expose these simulator-independent targets:
+
+```text
+make lint
+make compile
+make test TEST=<name> SEED=<seed>
+make regress
+make waves TEST=<name>
+```
+
+Open-source projects may implement them with Verilator, Icarus Verilog, and
+Surfer. Projects using VCS, Xcelium, Questa, or another commercial simulator
+implement the same targets in their own Makefile; simulator file lists, flags,
+libraries, licenses, and environment setup remain project-local.
+
+`verilog-ext` was evaluated after the basic workflow stabilized. It is not
+enabled because its LSP, formatting, linting, compilation, and navigation
+features duplicate the smaller verified setup. Add it only for a demonstrated
+need such as hierarchy browsing or port-connection editing.
 
 ## GitHub authentication
 

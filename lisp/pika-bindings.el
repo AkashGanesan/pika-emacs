@@ -17,6 +17,7 @@
 
 (defvar-keymap pika-debug-map
   :doc "Personal debugging commands."
+  "c" #'pika-cuda-gdb
   "g" #'gdb)
 
 (defvar-keymap pika-git-map
@@ -26,6 +27,34 @@
   "h" #'forge-dispatch
   "l" #'magit-log-current
   "s" #'magit-status)
+
+(defvar-keymap pika-python-map
+  :doc "Personal Python development commands."
+  "f" #'ruff-format-buffer
+  "r" #'lsp-rename
+  "s" #'consult-lsp-symbols
+  "t" #'pika-python-test
+  "u" #'pika-python-uv-sync)
+
+(defvar-keymap pika-hardware-map
+  :doc "Personal hardware development commands."
+  "c" #'pika-hardware-build
+  "f" #'pika-verible-format-buffer
+  "l" #'pika-hardware-lint
+  "r" #'pika-hardware-regress
+  "t" #'pika-hardware-test
+  "w" #'pika-hardware-waves)
+
+(defvar-keymap pika-writing-map
+  :doc "Personal fiction-writing commands."
+  "b" #'pika-writing-open-book
+  "c" #'pika-writing-capture-continuity
+  "e" #'pika-writing-export-manuscript
+  "f" #'pika-writing-focus-mode
+  "l" #'org-roam-node-insert
+  "o" #'pika-writing-open-outline
+  "p" #'pika-writing-spell-check
+  "s" #'pika-writing-capture-scene)
 
 (defvar-keymap pika-org-code-map
   :doc "Org source block commands."
@@ -61,6 +90,9 @@
 (keymap-set global-map "C-c g" pika-git-map)
 (keymap-set global-map "C-c a" pika-agenda-map)
 (keymap-set global-map "C-c n" pika-notes-map)
+(keymap-set global-map "C-c y" pika-python-map)
+(keymap-set global-map "C-c h" pika-hardware-map)
+(keymap-set global-map "C-c w" pika-writing-map)
 
 (which-key-add-key-based-replacements
   "C-c p" "project"
@@ -70,7 +102,10 @@
 (which-key-add-key-based-replacements
   "C-c a" "agenda"
   "C-c a b" "babel"
-  "C-c n" "notes")
+  "C-c h" "hardware"
+  "C-c n" "notes"
+  "C-c w" "writing"
+  "C-c y" "python")
 
 (provide 'pika-bindings)
 ;;; pika-bindings.el ends here
