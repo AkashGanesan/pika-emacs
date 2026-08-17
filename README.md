@@ -18,6 +18,7 @@ Migration phases 0 through 6 and the default-startup cutover are complete.
 - Markdown and GitHub-flavored Markdown editing
 - Built-in Modus Vivendi dark theme
 - Maximized GUI frames at startup
+- Futuristic city startup dashboard with recent projects and files
 - Magit for Git workflows
 - Forge for GitHub issues and pull requests
 - Encrypted credentials through `~/.authinfo.gpg`
@@ -61,16 +62,40 @@ Packages and generated state are stored under `var/` and are not committed.
 
 `~/.emacs.d` links to this repository. The preserved Spacemacs checkout is not loaded by normal Emacs startup.
 
+## Startup dashboard
+
+Starting Emacs without a target opens the Pika dashboard. The monumental city
+logo uses the repository SVG asset in graphical frames and falls back to a text
+wordmark in terminals. Recent projects open their project root in Dired; recent
+files open directly.
+
+Dashboard keys:
+
+- `Down`, `j`, or `TAB` — select the next item
+- `Up`, `k`, or `Shift-TAB` — select the previous item
+- `RET` — open the selected project or file
+- `SPC` or `Page Down` — scroll down
+- `DEL` or `Page Up` — scroll up
+- `p` — switch projects
+- `f` — find a file
+- `g` — refresh recent projects and files
+- `q` — close the dashboard
+
+Generated state and package-internal files are excluded from the recent-file
+list.
+
 ## Layout
 
 ```text
 early-init.el              settings required before package initialization
 init.el                    package bootstrap and module loading
+assets/pika-city.svg     futuristic city logo used by the startup dashboard
 lisp/pika-core.el          editing, persistence, and project defaults
 lisp/pika-completion.el    minibuffer and in-buffer completion
 lisp/pika-development.el  Magit, Forge, credentials, and development tools
 lisp/pika-hardware.el     C++, CUDA, RTL, simulation, and debugging workflows
 lisp/pika-org.el          agenda, Zettelkasten, citations, and code blocks
+lisp/pika-startup.el      logo, recent projects, and recent files dashboard
 lisp/pika-bindings.el      personal prefix keymaps
 lisp/pika-writing.el      Markdown, focused prose, capture, and manuscript export
 PLAN.md                    phased migration plan

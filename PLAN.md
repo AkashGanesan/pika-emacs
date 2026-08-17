@@ -156,6 +156,7 @@ Implemented:
 - Corfu and Cape
 - `project.el`
 - Which-Key
+- Futuristic city startup dashboard with recent projects and files
 - Personal project, compile, and debug prefixes
 
 Acceptance gate: isolated daemon startup, completion activation, project recognition, and keymap behavior. Passed.

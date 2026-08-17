@@ -32,6 +32,7 @@
 (require 'pika-hardware)
 (require 'pika-org)
 (require 'pika-writing)
+(require 'pika-startup)
 (require 'pika-bindings)
 
 (defun pika-restore-startup-settings ()
