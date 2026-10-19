@@ -36,7 +36,7 @@
 (defun pika-python-project-root (&optional require)
   "Return the current project root.
 When REQUIRE is non-nil, signal a user error outside a project."
-  (when-let ((project (project-current require)))
+  (when-let* ((project (project-current require)))
     (project-root project)))
 
 (defun pika-python-configure-environment ()
