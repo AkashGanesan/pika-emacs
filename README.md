@@ -100,6 +100,7 @@ lisp/pika-org.el          agenda, Zettelkasten, citations, and code blocks
 lisp/pika-startup.el      logo, recent projects, and recent files dashboard
 lisp/pika-bindings.el      personal prefix keymaps
 lisp/pika-writing.el      Markdown, focused prose, capture, and manuscript export
+lisp/pika-voice.el        voice daemon bridge: Emacs server and context push
 PLAN.md                    phased migration plan
 AGENTS.md                  repository maintenance rules
 ```
@@ -302,6 +303,18 @@ and no longer actively maintained.
 Ghostel forwards `C-g` to Claude, where it would open the external editor.
 `~/.claude/keybindings.json` moves that action to `M-e`; `C-x C-e` still
 works as well.
+
+## Voice control
+
+`pika-voice.el` loads `voice.el` from the voice repository (`~/voice`,
+configurable through `pika-voice-lisp-directory`) and enables `voice-mode`.
+The mode starts the Emacs server so the voice daemon can run commands with
+`emacsclient --eval`, and pushes the selected window's major mode, buffer,
+and project to the daemon's control socket so Org, Magit, and other
+mode-specific voice commands activate. Dictation is inserted at point as one
+undo unit. "claude <project> <prompt>" sends prompts to that project's
+`claude-code-ide` session. The voice daemon (`voiced`) is an external
+prerequisite; without it Emacs only runs the server.
 
 ## GitHub authentication
 

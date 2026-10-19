@@ -33,6 +33,7 @@
 (require 'pika-org)
 (require 'pika-writing)
 (require 'pika-startup)
+(require 'pika-voice)
 (require 'pika-bindings)
 
 (defun pika-restore-startup-settings ()

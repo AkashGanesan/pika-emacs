@@ -326,6 +326,13 @@ Behavioral verification started Claude Code from a project file in a graphical
 Emacs. Claude rendered in a `ghostel-mode` side window, the IDE lockfile
 appeared under `~/.claude/ide/`, and was removed on exit.
 
+### Phase 9 — Voice control — In progress
+
+- `pika-voice.el` loads `voice.el` from `~/voice` and enables `voice-mode`:
+  Emacs server for `emacsclient`, context push for mode-specific commands.
+- Voice commands for Emacs, Org, and Magit live in the voice repository
+  (`commands/apps/*.voice`), not in this configuration.
+
 ## Maintenance rules
 
 1. Add one package only for one observed workflow gap.
