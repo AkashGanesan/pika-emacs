@@ -51,6 +51,8 @@ Repository: <https://github.com/AkashGanesan/pika-emacs>
 - RTL development requires Verible, Verilator, and a simulator; Icarus Verilog
   and Surfer are the tested open-source simulation and waveform tools.
 - Fiction spell checking requires Aspell.
+- Claude Code integration requires the `claude` CLI on `PATH`. Ghostel downloads
+  its prebuilt native module into `var/ghostel/` on first use.
 
 ## Run
 
@@ -111,6 +113,7 @@ expanding `init.el`.
 |-------------|-----------------------------------------------------|
 | `C-s`       | Search the current buffer with Consult              |
 | `C-x b`     | Switch buffers with Consult                         |
+| `C-x C-b`   | List buffers in Ibuffer, grouped by file type       |
 | `C-.`       | Act on the current completion candidate with Embark |
 | `M-/`       | Complete from buffer text with Cape                 |
 | `C-c f`     | Complete a file name with Cape                      |
@@ -157,6 +160,14 @@ expanding `init.el`.
 | `C-c w o`   | Open the manuscript outline                           |
 | `C-c w p`   | Spell-check the current prose buffer                  |
 | `C-c w s`   | Capture a scene idea from the current location        |
+| `C-c i i`   | Open the Claude Code menu                             |
+| `C-c i c`   | Start Claude Code in the current project              |
+| `C-c i d`   | Start Claude Code with permission checks bypassed     |
+| `C-c i r`   | Resume a previous Claude Code conversation            |
+| `C-c i t`   | Toggle the Claude Code window                         |
+| `C-c i p`   | Send a prompt to the running Claude Code session      |
+| `C-c i @`   | Insert an @-mention for the selection or file         |
+| `C-c i k`   | Stop the Claude Code session                          |
 | `M-.`       | Find the definition of the symbol at point           |
 | `M-?`       | Find references to the symbol at point               |
 
@@ -269,6 +280,28 @@ libraries, licenses, and environment setup remain project-local.
 enabled because its LSP, formatting, linting, compilation, and navigation
 features duplicate the smaller verified setup. Add it only for a demonstrated
 need such as hierarchy browsing or port-connection editing.
+
+## Claude Code
+
+`claude-code-ide` runs the Claude Code CLI in a side window and connects it to
+Emacs through Claude's IDE protocol. Claude sees the current file and
+selection, reads Flycheck diagnostics, and proposes edits as Ediff sessions.
+Its Emacs MCP tools expose xref (backed by `lsp-mode`), `project.el`, imenu,
+and tree-sitter queries. Arbitrary Elisp evaluation (`executeCode`) is
+disabled. `C-c i d` starts a session with `--dangerously-skip-permissions`;
+use it only in trusted projects. The package is not on an ELPA archive, so `package-vc` installs it
+from GitHub.
+
+The terminal backend is Ghostel, built on libghostty-vt. It was chosen over
+vterm and Eat for Claude Code because it implements synchronized output, true
+color, and the Kitty keyboard protocol, which avoids the flicker and scroll
+jumps that vterm and Eat show with Claude's redraw-heavy interface. Vterm
+requires a C build and lacks synchronized output; Eat is pure Elisp, slower,
+and no longer actively maintained.
+
+Ghostel forwards `C-g` to Claude, where it would open the external editor.
+`~/.claude/keybindings.json` moves that action to `M-e`; `C-x C-e` still
+works as well.
 
 ## GitHub authentication
 

@@ -84,6 +84,18 @@
   "s" #'org-roam-db-sync
   "x" #'org-cite-insert)
 
+(defvar-keymap pika-ai-map
+  :doc "Personal Claude Code commands."
+  "@" #'claude-code-ide-insert-at-mentioned
+  "c" #'claude-code-ide
+  "d" #'pika-claude-code-ide-skip-permissions
+  "i" #'claude-code-ide-menu
+  "k" #'claude-code-ide-stop
+  "p" #'claude-code-ide-send-prompt
+  "r" #'claude-code-ide-resume
+  "t" #'claude-code-ide-toggle)
+
+(keymap-set global-map "<remap> <list-buffers>" #'ibuffer)
 (keymap-set global-map "C-c p" pika-project-map)
 (keymap-set global-map "C-c c" pika-compile-map)
 (keymap-set global-map "C-c d" pika-debug-map)
@@ -93,6 +105,7 @@
 (keymap-set global-map "C-c y" pika-python-map)
 (keymap-set global-map "C-c h" pika-hardware-map)
 (keymap-set global-map "C-c w" pika-writing-map)
+(keymap-set global-map "C-c i" pika-ai-map)
 
 (which-key-add-key-based-replacements
   "C-c p" "project"
@@ -103,6 +116,7 @@
   "C-c a" "agenda"
   "C-c a b" "babel"
   "C-c h" "hardware"
+  "C-c i" "ai"
   "C-c n" "notes"
   "C-c w" "writing"
   "C-c y" "python")

@@ -143,5 +143,45 @@ When REQUIRE is non-nil, signal a user error outside a project."
 (use-package ruff-format
   :commands (ruff-format-buffer ruff-format-region))
 
+(use-package ghostel
+  :commands ghostel
+  :custom
+  ;; Keep the native module outside the package tree so upgrades cannot
+  ;; replace it while it is loaded.
+  (ghostel-module-directory (expand-file-name "ghostel/" pika-var-directory))
+  (ghostel-module-auto-install 'download))
+
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :commands (claude-code-ide
+             claude-code-ide-continue
+             claude-code-ide-insert-at-mentioned
+             claude-code-ide-menu
+             claude-code-ide-resume
+             claude-code-ide-send-prompt
+             claude-code-ide-stop
+             claude-code-ide-toggle)
+  :custom
+  (claude-code-ide-terminal-backend 'ghostel)
+  (claude-code-ide-diagnostics-backend 'flycheck)
+  (claude-code-ide-window-side 'right)
+  ;; Expose xref, project, and imenu tools, but not arbitrary Elisp evaluation.
+  (claude-code-ide-enable-execute-code nil)
+  :config
+  (claude-code-ide-emacs-tools-setup))
+
+(defvar claude-code-ide-cli-extra-flags)
+
+(defun pika-claude-code-ide-skip-permissions ()
+  "Start Claude Code with every permission check bypassed.
+Claude runs tools, edits files, and executes commands without asking."
+  (interactive)
+  (require 'claude-code-ide)
+  (let ((claude-code-ide-cli-extra-flags
+         (string-join (list claude-code-ide-cli-extra-flags
+                            "--dangerously-skip-permissions")
+                      " ")))
+    (claude-code-ide)))
+
 (provide 'pika-development)
 ;;; pika-development.el ends here

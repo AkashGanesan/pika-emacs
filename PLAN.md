@@ -314,6 +314,18 @@ The default-startup cutover was completed early by user choice:
 3. Normal `emacs` startup loads pika-emacs without `--init-directory`.
 4. The Spacemacs backup remains available until its rollback value is gone.
 
+### Phase 8 — Claude Code — Complete
+
+- `claude-code-ide` (installed with `package-vc`) provides the IDE protocol
+  bridge: selection, Flycheck diagnostics, Ediff diffs, and xref/project/imenu
+  MCP tools. `executeCode` is disabled.
+- Ghostel is the terminal backend after comparison with vterm and Eat.
+- `C-c i` holds the Claude Code commands.
+
+Behavioral verification started Claude Code from a project file in a graphical
+Emacs. Claude rendered in a `ghostel-mode` side window, the IDE lockfile
+appeared under `~/.claude/ide/`, and was removed on exit.
+
 ## Maintenance rules
 
 1. Add one package only for one observed workflow gap.

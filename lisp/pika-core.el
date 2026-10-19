@@ -23,7 +23,8 @@
       recentf-save-file (expand-file-name "recentf" pika-var-directory)
       savehist-file (expand-file-name "history" pika-var-directory)
       save-place-file (expand-file-name "places" pika-var-directory)
-      bookmark-default-file (expand-file-name "bookmarks" pika-var-directory))
+      bookmark-default-file (expand-file-name "bookmarks" pika-var-directory)
+      tramp-persistency-file-name (expand-file-name "tramp" pika-var-directory))
 
 (set-charset-priority 'unicode)
 (prefer-coding-system 'utf-8-unix)
@@ -56,6 +57,53 @@
      (project-find-regexp "Find regexp")
      (project-dired "Dired")
      (project-compile "Compile"))))
+
+(defun pika-ibuffer-use-default-groups ()
+  "Group the current Ibuffer listing with the default filter groups."
+  (ibuffer-switch-to-saved-filter-groups "default"))
+
+(use-package ibuffer
+  :ensure nil
+  :hook (ibuffer-mode . pika-ibuffer-use-default-groups)
+  :custom
+  (ibuffer-show-empty-filter-groups nil)
+  ;; The first matching group wins, so specific groups precede broad ones.
+  (ibuffer-saved-filter-groups
+   '(("default"
+      ("Claude" (name . "\\`\\*claude-code"))
+      ("Python" (derived-mode . python-base-mode))
+      ("CUDA" (derived-mode . cuda-mode))
+      ("C/C++" (or (derived-mode . c-mode)
+                   (derived-mode . c++-mode)
+                   (derived-mode . c-ts-base-mode)))
+      ("RTL" (derived-mode . verilog-mode))
+      ("Build" (or (derived-mode . makefile-mode)
+                   (derived-mode . cmake-mode)
+                   (derived-mode . cmake-ts-mode)))
+      ("Shell" (or (derived-mode . sh-base-mode)
+                   (derived-mode . bash-ts-mode)))
+      ("Emacs Lisp" (derived-mode . lisp-data-mode))
+      ("Config" (or (derived-mode . conf-mode)
+                    (derived-mode . js-json-mode)
+                    (derived-mode . json-ts-mode)
+                    (derived-mode . yaml-mode)
+                    (derived-mode . yaml-ts-mode)
+                    (derived-mode . toml-ts-mode)
+                    (file-extension . "\\(?:ya?ml\\|toml\\|ini\\|cfg\\)")))
+      ("Org" (derived-mode . org-mode))
+      ("Markdown" (derived-mode . markdown-mode))
+      ("Magit" (or (derived-mode . magit-mode)
+                   (derived-mode . forge-topic-mode)))
+      ("Dired" (derived-mode . dired-mode))
+      ("Terminals" (or (derived-mode . ghostel-mode)
+                       (derived-mode . comint-mode)
+                       (derived-mode . eshell-mode)))
+      ("Compilation" (derived-mode . compilation-mode))
+      ("Help" (or (derived-mode . help-mode)
+                  (derived-mode . Info-mode)
+                  (derived-mode . apropos-mode)
+                  (derived-mode . Man-mode)))
+      ("Emacs" (name . "\\`\\*"))))))
 
 (provide 'pika-core)
 ;;; pika-core.el ends here
